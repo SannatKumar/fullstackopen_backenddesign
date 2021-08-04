@@ -1,3 +1,4 @@
+const { response } = require('express')
 const express = require('express')
 const app = express()
 
@@ -29,6 +30,12 @@ app.get('/', (req, res) =>{
 
 app.get('/api/notes', (req, res)=>{
     res.json(notes)
+})
+
+app.get('/api/notes/:id', (req, res) =>{
+    const id = Number(req.params.id) 
+    const note = notes.find(note => note.id === id)    
+    res.json(note)
 })
 
 
