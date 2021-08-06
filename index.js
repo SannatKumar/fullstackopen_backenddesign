@@ -57,10 +57,29 @@ app.delete('/api/notes/:id', (req, res)=>{
 })
 
 //Post New Notes
+
+const generateId = () =>{
+    const maxId = notes.length > 0
+    ? Math.max(...notes.map(n=> n.id))
+    : 0
+    return maxId + 1
+}
 app.post('/api/notes',(req, res)=>{
-    const note = req.body
-    console.log(typeof(note))
-    console.log(note)
+    const body = req.body
+
+    if(!body.content){
+        return response.status(400).json({
+            error : 'Content missing' 
+        })
+    }
+
+    const note = {
+        content: body.content,
+        important: body.important || false,
+        date: new Date(),
+        id: generateId(),
+    }
+    notes = notes.concat(note)
     res.json(note)
 })
 
