@@ -2,6 +2,10 @@ const { response } = require('express')
 const express = require('express')
 const app = express()
 
+//Json parser middleware defined for parsing the request body
+app.use(express.json())
+
+//Hard Coded data List
 let notes = [
     {
         id: 1,
@@ -28,10 +32,12 @@ app.get('/', (req, res) =>{
     res.send('<h1>Hello World</h1>')
 })
 
+//Get all the notes
 app.get('/api/notes', (req, res)=>{
     res.json(notes)
 })
 
+//Get single note
 app.get('/api/notes/:id', (req, res) =>{
     const id = Number(req.params.id) 
     const note = notes.find(note => note.id === id)
@@ -42,12 +48,23 @@ app.get('/api/notes/:id', (req, res) =>{
     }
 })
 
+// Delete Single Note
 app.delete('/api/notes/:id', (req, res)=>{
     const id = Number(req.params.id)
     notes = notes.filter(note => note.id!= id)
 
     res.status(204).end()
 })
+
+//Post New Notes
+app.post('/api/notes',(req, res)=>{
+    const note = req.body
+    console.log(typeof(note))
+    console.log(note)
+    res.json(note)
+})
+
+
 
 
 const PORT = 3001
